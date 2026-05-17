@@ -1,0 +1,11 @@
+.mil-region-activity > *:not(h2) {
+    max-height: 0;
+    opacity: 0;
+    overflow: hidden;
+    transition: max-height 0.4s ease, opacity 0.2s ease;
+}
+
+.mil-region-activity:hover > *:not(h2) {
+    max-height: 5000px;
+    opacity: 1;
+}
