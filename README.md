@@ -1,8 +1,6 @@
 # HideAchievements
 
-A minimal Millennium theme that adds toggles for hiding clutter on Steam game pages.
-
-By **lugia19**.
+A minimal Millennium theme that adds toggles for hiding achievement-related sections on Steam game pages.
 
 ## What it controls
 
