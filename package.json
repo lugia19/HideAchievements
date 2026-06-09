@@ -1,0 +1,19 @@
+{
+    "name": "hide-achievements",
+    "version": "2.1.0",
+    "description": "Toggle visibility of Steam game page sections.",
+    "main": "./frontend/index.jsx",
+    "type": "module",
+    "author": "lugia19",
+    "license": "MIT",
+    "scripts": {
+        "dev": "millennium-ttc --build dev",
+        "build": "millennium-ttc --build prod"
+    },
+    "devDependencies": {
+        "@steambrew/client": "^5.8.4",
+        "@steambrew/ttc": "^3.2.6",
+        "@types/react": "19.1.1",
+        "@types/react-dom": "19.1.1"
+    }
+}

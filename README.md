@@ -1,6 +1,8 @@
 # HideAchievements
 
-A minimal theme that adds toggles for hiding clutter on Steam game pages.
+A minimal [Millennium](https://steambrew.app/) **plugin** that adds toggles for hiding clutter on Steam game pages.
+
+> v1.x of this project was a Millennium *theme*. v2.0 is a plugin — if you had the theme installed, remove it from your skins/themes folder.
 
 ## What it controls
 
@@ -10,14 +12,38 @@ Each of these has **Show / Hide / On hover** options (except the mini bar, which
 - Achievements section
 - Trading Cards section
 - Mini achievements progress bar (next to the Play button)
+- In-game overlay achievements (Show / Hide only): the Achievements taskbar button and the "Your Achievements" section in the Game Overview window
 
 "On hover" keeps the section's header visible but collapses the contents; hovering the section expands it.
 
 Defaults are set to **On hover** (or **Hide** for the mini bar).
 
+## Installation
+
+1. Download a release (or build from source, see below).
+2. Drop the plugin folder into `<Steam>\millennium\plugins\`.
+3. Restart Steam and enable **HideAchievements** in Millennium's settings.
+
+Settings live in Millennium settings → Plugins → HideAchievements.
+
+## Building from source
+
+```
+npm install
+npm run build   # or `npm run dev` while developing
+```
+
+This produces `.millennium/Dist/index.js`. For development, junction the repo into the plugins folder so builds are picked up directly:
+
+```powershell
+New-Item -ItemType Junction -Path "C:\Program Files (x86)\Steam\millennium\plugins\hide-achievements" -Target "<path to this repo>"
+```
+
+After a rebuild, reload plugins (or restart Steam) to pick up changes.
+
 ## How it works
 
-The JS file (`libraryroot.custom.js`) tags Steam's game-page sections with stable class names, because Steam's own class names are hashed build artifacts that change with every update.
+The plugin's frontend runs in Steam's shared JS context and hooks every main Steam window via `Millennium.AddWindowCreateHook`. In each window it runs a debounced MutationObserver (`frontend/taggers.ts`) that tags game-page sections with stable class names — Steam's own class names are hashed build artifacts that change with every update — and injects a `<style>` element (`frontend/styles.ts`) generated from your settings.
 
 Each section is identified by structural fingerprints:
 
@@ -30,13 +56,16 @@ Each section is identified by structural fingerprints:
 
 The Achievements/Mini bar fingerprints use math (fraction's value must equal the rendered percentage within 1%) to avoid false positives.
 
-The whole JS file is also gated on `isGamePage()`, a check for the `input[name="fileuploadhero"]` element that only exists on game pages.
+Tagging is also gated on `isGamePage()`, a check for the `input[name="fileuploadhero"]` element that only exists on game pages.
+
+The in-game overlay needs no tagging: its windows (`desktopoverlay_…`, `GameOverview_…`) register in the same popup manager, and its elements carry stable identifiers — the taskbar button has Valve's semantic `Achievements` component class, and the Game Overview section has `data-rbd-draggable-id="Achievements"`.
+
+This makes the detection language-agnostic — no text labels are matched, so it works in every Steam UI language.
 
 ## Adding more sections
 
 To add another toggleable section:
 
-1. Write a new tagger function in `libraryroot.custom.js` that identifies the section structurally and adds a stable class (e.g. `mil-region-whatever`).
-2. Call it from `apply()`.
-3. Make a folder under `elements/options/` with `hide.css` and (optionally) `hover.css` targeting `.mil-region-whatever`.
-4. Add a new entry to `Conditions` in `skin.json` pointing at those CSS files.
+1. Write a new tagger function in `frontend/taggers.ts` that identifies the section structurally and adds a stable class (e.g. `mil-region-whatever`), and call it from `applyTags()`. Add the key to `SectionKey`.
+2. Add the class and (optionally) hover support in `frontend/styles.ts` (`CLASS` map and `buildCss`).
+3. Add a default in `DEFAULTS` and a `SectionSetting` entry in `frontend/index.tsx`.
