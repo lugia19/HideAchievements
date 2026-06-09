@@ -33,7 +33,11 @@ npm install
 npm run build   # or `npm run dev` while developing
 ```
 
-This produces `.millennium/Dist/index.js`. For development, junction the repo into the plugins folder so builds are picked up directly:
+This produces `.millennium/Dist/index.js`. To package a release zip (type check + prod build + bundle into `release/`):
+
+```powershell
+./build.ps1
+``` For development, junction the repo into the plugins folder so builds are picked up directly:
 
 ```powershell
 New-Item -ItemType Junction -Path "C:\Program Files (x86)\Steam\millennium\plugins\hide-achievements" -Target "<path to this repo>"

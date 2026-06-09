@@ -5,7 +5,8 @@ Millennium plugin that hides achievement-related UI in the Steam client. See REA
 ## Build & install
 
 - `npm install`, then `npm run dev` (or `npm run build` for prod) → `.millennium/Dist/index.js` via `millennium-ttc`.
-- ttc does no type checking; run `npx tsc --noEmit` separately.
+- ttc's dev build does no type checking (prod does); run `npx tsc --noEmit` separately.
+- `./build.ps1` packages a release: type check + prod build + zip (plugin.json, backend/, .millennium/Dist, README) into `release/`.
 - For local dev, junction this repo into the plugins folder (no admin needed):
   `New-Item -ItemType Junction -Path "C:\Program Files (x86)\Steam\millennium\plugins\hide-achievements" -Target <repo>`
 - Frontend-only changes: reload plugin. Backend (`backend/main.lua`) changes: restart Steam.
