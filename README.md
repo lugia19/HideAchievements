@@ -2,7 +2,8 @@
 
 A minimal [Millennium](https://steambrew.app/) **plugin** that adds toggles for hiding clutter on Steam game pages.
 
-> v1.x of this project was a Millennium *theme*. v2.0 is a plugin — if you had the theme installed, remove it from your skins/themes folder.
+<img width="1572" height="650" alt="image" src="https://github.com/user-attachments/assets/ecc7baa0-98f6-4708-9377-5c2ba7853483" />
+
 
 ## What it controls
 
